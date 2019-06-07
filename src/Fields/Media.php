@@ -30,7 +30,6 @@ class Media extends Field
     public $meta = ['type' => 'media'];
 
     protected $useTemporaryUrl = false;
-    protected $expirationInMinutes = 10;
 
 	public function serializeMediaUsing(callable $serializeMediaUsing): self
     {
