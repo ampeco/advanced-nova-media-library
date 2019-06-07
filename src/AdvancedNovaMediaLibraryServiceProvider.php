@@ -34,4 +34,8 @@ class AdvancedNovaMediaLibraryServiceProvider extends ServiceProvider
             ->prefix('nova-vendor/ebess/advanced-nova-media-library')
             ->group(__DIR__.'/../routes/api.php');
     }
+
+    public function register() {
+        $this->mergeConfigFrom(__DIR__.'/../config/advanced-nova-media-library.php', 'advanced-nova-media-library');
+    }
 }
