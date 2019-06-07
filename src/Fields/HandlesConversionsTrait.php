@@ -38,4 +38,16 @@ trait HandlesConversionsTrait
 			'preview' => $media->getFullUrl($this->meta['conversionOnPreview'] ?? ''),
 		];
 	}
+
+    public function getTemporaryConversionUrls(\Spatie\MediaLibrary\Models\Media $media, $expirationMinutes): array
+    {
+        return [
+            // original needed several purposes like cropping
+            '__original__' => $media->getTemporaryUrl(now()->addMinutes($expirationMinutes)),
+            'indexView' => $media->getTemporaryUrl(now()->addMinutes($expirationMinutes),$this->meta['conversionOnIndexView'] ?? ''),
+            'detailView' => $media->getTemporaryUrl(now()->addMinutes($expirationMinutes),$this->meta['conversionOnDetailView'] ?? ''),
+            'form' => $media->getTemporaryUrl(now()->addMinutes($expirationMinutes),$this->meta['conversionOnForm'] ?? ''),
+            'preview' => $media->getTemporaryUrl(now()->addMinutes($expirationMinutes),$this->meta['conversionOnPreview'] ?? ''),
+        ];
+    }
 }

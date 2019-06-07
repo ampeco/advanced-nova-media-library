@@ -29,6 +29,9 @@ class Media extends Field
 
     public $meta = ['type' => 'media'];
 
+    protected $useTemporaryUrl = false;
+    protected $expirationInMinutes = 10;
+
 	public function serializeMediaUsing(callable $serializeMediaUsing): self
     {
         $this->serializeMediaCallback = $serializeMediaUsing;
@@ -93,6 +96,20 @@ class Media extends Field
     public function setName($callback)
     {
         $this->setNameCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Will use temporary url for media.
+     *
+     * @param $expirationInMinutes
+     * @return $this
+     */
+    public function withTemporaryUrls($expirationInMinutes = null)
+    {
+        $this->useTemporaryUrl = true;
+        $this->expirationInMinutes = $expirationInMinutes ?: config('advanced-nova-media-library.default-temporary-url-expiration-minutes');
 
         return $this;
     }
@@ -200,7 +217,7 @@ class Media extends Field
 
 		$this->value = $resource->getMedia($collectionName)
             ->map(function (\Spatie\MediaLibrary\Models\Media $media) {
-                return array_merge($this->serializeMedia($media), ['__media_urls__' => $this->getConversionUrls($media)]);
+                return array_merge($this->serializeMedia($media), ['__media_urls__' => $this->useTemporaryUrl ? $this->getTemporaryConversionUrls($media, $this->expirationInMinutes) : $this->getConversionUrls($media)]);
             });
 
 		if ($collectionName) {
