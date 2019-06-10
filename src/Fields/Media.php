@@ -114,6 +114,16 @@ class Media extends Field
     }
 
     /**
+     * Determines whether to use temporary URLs or not
+     *
+     * @return bool
+     */
+    private function shouldUseTemporaryUrls()
+    {
+        return $this->useTemporaryUrl && in_array(config('medialibrary.disk_name'), config('advanced-nova-media-library.temporary_url_disk_names'));
+    }
+
+    /**
      * @param HasMedia $model
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
@@ -216,7 +226,7 @@ class Media extends Field
 
 		$this->value = $resource->getMedia($collectionName)
             ->map(function (\Spatie\MediaLibrary\Models\Media $media) {
-                return array_merge($this->serializeMedia($media), ['__media_urls__' => $this->useTemporaryUrl ? $this->getTemporaryConversionUrls($media, $this->expirationInMinutes) : $this->getConversionUrls($media)]);
+                return array_merge($this->serializeMedia($media), ['__media_urls__' => $this->shouldUseTemporaryUrls() ? $this->getTemporaryConversionUrls($media, $this->expirationInMinutes) : $this->getConversionUrls($media)]);
             });
 
 		if ($collectionName) {
