@@ -12,8 +12,8 @@ class AdvancedNovaMediaLibraryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/advanced-nova-media-library.php' => config_path('advanced-nova-media-library.php'),
-        ], 'config');
+            __DIR__ . '/config/nova-media-library.php' => config_path('nova-media-library.php'),
+        ], 'nova-media-library');
 
         $this->app->booted(function () {
             $this->routes();
@@ -36,6 +36,6 @@ class AdvancedNovaMediaLibraryServiceProvider extends ServiceProvider
     }
 
     public function register() {
-        $this->mergeConfigFrom(__DIR__.'/../config/advanced-nova-media-library.php', 'advanced-nova-media-library');
+        $this->mergeConfigFrom(__DIR__.'/config/nova-media-library.php', 'nova-media-library');
     }
 }

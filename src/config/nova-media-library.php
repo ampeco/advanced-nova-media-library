@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'enable-existing-media' => false,
+
     /*
      * When temporary url is used how many minutes should it expire for.
      */
